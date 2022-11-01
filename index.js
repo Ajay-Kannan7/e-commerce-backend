@@ -52,11 +52,11 @@ app.post("/signin",(req,res)=>{
                 res.send({message:"Login Successful, head over to the homepage!"})
             }
             else{
-                res.send({message:"Password didn't match"})
+                res.send({message:"Wrong Credentials!"})
             }
         }
         else{
-            res.send({message:"User's not registered"})
+            res.send({message:"Wrong Credentials!"})
         }
     })
 })
