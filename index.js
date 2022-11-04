@@ -2,6 +2,8 @@ let express=require("express");
 let mongoose=require("mongoose")
 let cors=require('cors')
 let app=express();
+let Stripe=require('stripe')
+let stripe=Stripe("sk_test_51LrhVWSCStzcfhTCPS3M8457PxMS486x9ldPWK6BTajkFTVUvwNWX8idtSAiA7ZGMpQ8BQ2KhDEC5H4hLP71rSsO00bC9Uo0l2")
 let socket=require("socket.io");
 let PORT=9000;
 let signInModel=require("./model/model-schema")
@@ -69,6 +71,31 @@ app.get("/",(req,res)=>{
     })
     console.log("API called")
 })
+
+app.post('/create-checkout-session', async (req, res) => {
+
+    let line_items = req.body.map((item) => {
+        return {
+          price_data: {
+            currency: "usd",
+            product_data: {
+              name: item.header
+            },
+            unit_amount: (item.rate/item.quantity) * 100,
+          },
+          quantity: item.quantity,
+        };
+      });
+
+    const session = await stripe.checkout.sessions.create({
+      line_items,
+      mode: 'payment',
+      success_url: "http://localhost:3000/success",
+      cancel_url: "http://localhost:3000/cart",
+    });
+  
+    res.send({url:session.url});
+  });
 
 
 let server=app.listen(process.env.PORT || PORT)
