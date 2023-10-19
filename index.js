@@ -73,7 +73,7 @@ app.get("/",(req,res)=>{
 })
 
 app.post('/create-checkout-session', async (req, res) => {
-
+    console.log("called")
     let line_items = req.body.map((item) => {
         return {
           price_data: {
