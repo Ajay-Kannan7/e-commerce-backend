@@ -10,7 +10,7 @@ let signInModel=require("./model/model-schema")
 let dbURL="mongodb+srv://default-user:default123@firstevercluster.jsitxrg.mongodb.net/?retryWrites=true&w=majority"
 app.use(express.json())
 app.use(express.urlencoded({extended:true}));
-app.use(cors({origin:"https://store-it.netlify.app/"}))
+app.use(cors())
 
 mongoose.connect(dbURL)
 .then(()=>{
